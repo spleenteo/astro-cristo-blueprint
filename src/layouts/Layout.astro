@@ -1,5 +1,5 @@
 ---
-import { Seo, type TitleMetaLinkTag } from '@datocms/astro';
+import { Seo } from '@datocms/astro';
 
 import Header from '~/components/Header.astro';
 import Footer from '~/components/Footer.astro';
@@ -11,19 +11,17 @@ import { executeQuery } from '~/lib/datocms/executeQuery';
 import { graphql } from '~/lib/datocms/graphql';
 import { DraftModeToggler } from '~/components/DraftModeToggler';
 import { isDraftModeEnabled } from '~/lib/draftMode';
+import { setSourceMapRange } from 'typescript';
 
-export interface Props {
-  title: string;
-}
 
-const { additionalSeo = [] } = Astro.props;
+const { seo = [] } = Astro.props;
 
 
 const query = graphql(
   /* GraphQL */ `
     query RootQuery {
-      _site {
-        faviconMetaTags {
+     site: _site {
+        favicon: faviconMetaTags {
           ...TagFragment
         }
       }
@@ -39,11 +37,9 @@ const result = await executeQuery(query, { includeDrafts: draftModeEnabled });
 <!doctype html>
 <html lang={Astro.currentLocale}>
   <head>
+    <Seo data={[...seo, ...result.site.favicon]} />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <Seo data={[...result._site.faviconMetaTags, ...additionalSeo]} />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />

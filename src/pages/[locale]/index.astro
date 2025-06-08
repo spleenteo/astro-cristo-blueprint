@@ -1,10 +1,49 @@
 ---
 import Layout from '~/layouts/Layout.astro';
+import { graphql } from '~/lib/datocms/graphql';
+import { executeQuery } from '~/lib/datocms/executeQuery';
+import { TagFragment } from '~/lib/datocms/commonFragments';
+
+import { isDraftModeEnabled } from '~/lib/draftMode';
+import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
+
+const { locale } = Astro.params;
+const query = graphql(
+  `
+    query HomePageQuery($locale: SiteLocale = en) {
+      home(locale: $locale) {
+        id
+        _publishedAt
+        _updatedAt
+        title
+        subtitle
+        seo: _seoMetaTags {
+          ...TagFragment
+        }
+      }
+    }
+  `,
+  [TagFragment],
+);
+
+const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
+const { home } = await executeQuery(query, {
+  includeDrafts: draftModeEnabled,
+  variables: { locale },
+});
+
+if (!home) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Not found',
+  });
+}
 ---
 
-<Layout title="Benvenuto">
+<Layout seo={home.seo}>
   <div class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">Benvenuto nel nostro sito</h1>
-    <p class="text-lg text-gray-700">Questo è un semplice sito Astro multilingua pronto per l'integrazione con DatoCMS.</p>
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">{home.title}</h1>
+    <h2>{locale}</h2>
+    <p class="text-lg text-gray-700">{home.subtitle}</p>
   </div>
 </Layout>
