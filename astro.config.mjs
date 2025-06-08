@@ -2,11 +2,30 @@ import { defineConfig, envField } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import icon from 'astro-icon';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  integrations: [tailwind()],
+  integrations: [
+    tailwind(),
+    icon({
+      include: {
+        tabler: ['*'],
+        'flat-color-icons': [
+          'template',
+          'gallery',
+          'approval',
+          'document',
+          'advertising',
+          'currency-exchange',
+          'voice-presentation',
+          'business-contact',
+          'database',
+        ],
+      },
+    }),
+  ],
   output: 'server',
   trailingSlash: 'always',
 
