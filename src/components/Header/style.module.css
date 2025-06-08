@@ -1,0 +1,14 @@
+/* Header Component Styles - BEM Naming Convention */
+
+@tailwind components;
+
+@layer components {
+  .header {
+    @apply top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out;
+    border: 3px solid red;
+  }
+  .headerDark {
+    background-color: black;
+    color: white;
+  }
+}

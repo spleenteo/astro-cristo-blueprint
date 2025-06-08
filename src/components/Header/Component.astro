@@ -1,6 +1,9 @@
 ---
 import { getLocaleFromUrl } from '~/lib/i18n';
 import { getNavigationData } from '~/lib/navigation'
+import { Icon } from 'astro-icon/components';
+import s from './style.module.css';
+
 
 interface Link {
   text?: string;
@@ -27,17 +30,12 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 
 // Get available locales for mobile menu
 const availableLocales = await import('~/lib/i18n').then((m) => m.default());
-
-
-
 const navigationData = await getNavigationData(currentLocale);
 const links = navigationData.links.length > 0 ? navigationData.links : propsLinks || [];
 
-
-
 ---
 
-<header class="top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out data-aw-sticky-header">
+<header class:list={[s.header, s.headerDark]}>
   <div class="relative text-default py-3 px-3 md:px-6 mx-auto w-full ">
     <nav class="max-w-7xl mx-auto">
       <div class="flex justify-between items-center md:grid md:grid-cols-3 md:items-center">
@@ -45,9 +43,7 @@ const links = navigationData.links.length > 0 ? navigationData.links : propsLink
         <div class="space-x-4">
         <nav class="items-center w-full md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
         aria-label="Main navigation">
-        <ul
-          class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center"
-        >
+        <ul class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center">
           {
           links.map(({ text, href, links }: any) => (
             <li class={links?.length ? 'dropdown' : ''}>
@@ -92,16 +88,10 @@ const links = navigationData.links.length > 0 ? navigationData.links : propsLink
               )}
             </li>
           ))
-        }
-        </ul>
-    </nav>
-    
-    
-  </div>
-
-
-
-
+          }
+          </ul>
+        </nav>
+      </div>
         <a href="/" class="hover:text-gray-600">EN</a>
         <a href="/it/" class="hover:text-gray-600">IT</a>
       </div>
