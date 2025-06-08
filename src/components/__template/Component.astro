@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+import { ComponentFragment } from './fragments';
+
+import s from './style.module.css';
+
+
+const currentLocale = await getLocaleFromUrl(Astro.url);
+
+interface Props {
+  block: FragmentOf<typeof ComponentFragment>;
+}
+const { block } = Astro.props;
+
+// Read unmasked block from fragment
+const unmaskedBlock = readFragment(ComponentFragment, block);
+---
+
+<div class:list={[s.customClass]}>
+  {unmaskedBlock.xxx}
+</div>
