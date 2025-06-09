@@ -11,12 +11,12 @@
     "generate-schema": "dotenv -c -- bash -c 'gql.tada generate schema https://graphql.datocms.com --header \"X-Exclude-Invalid: true\" --header \"Authorization: $DATOCMS_PUBLISHED_CONTENT_CDA_TOKEN\"'"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.5",
     "@datocms/astro": "^0.6.2",
     "@datocms/cda-client": "^0.2.7",
     "@datocms/cma-client": "^4.0.1",
     "@iconify-json/flat-color-icons": "^1.2.1",
     "@iconify-json/tabler": "^1.2.19",
+    "@tailwindcss/cli": "^4.1.8",
     "astro": "^5.0.4",
     "astro-icon": "^1.1.5",
     "datocms-structured-text-generic-html-renderer": "^5.0.0",
@@ -24,7 +24,7 @@
     "dotenv-cli": "^8.0.0",
     "gql.tada": "^1.8.10",
     "jsonwebtoken": "^9.0.2",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@types/node": "^20.11.1",

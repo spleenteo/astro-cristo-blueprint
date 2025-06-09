@@ -8,8 +8,7 @@ import { isDraftModeEnabled } from '~/lib/draftMode';
 import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
 
 const { locale } = Astro.params;
-const query = graphql(
-  `
+const query = graphql(`
     query HomePageQuery($locale: SiteLocale = en) {
       home(locale: $locale) {
         id
@@ -41,9 +40,19 @@ if (!home) {
 ---
 
 <Layout seo={home.seo}>
-  <div class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">{home.title}</h1>
-    <h2>{locale}</h2>
-    <p class="text-lg text-gray-700">{home.subtitle}</p>
+  <div class="hero bg-base-200">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">{home.title}</h1>
+        <p class="py-6">{home.subtitle}</p>
+        <button class="btn btn-primary">
+          <a href="https://daisyui.com/components/">Search for components</a>
+        </button>
+      </div>
+    </div>
   </div>
+  <hr/>
+
+</div>
+
 </Layout>

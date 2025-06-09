@@ -1,8 +1,0 @@
-/* Header Component Styles - BEM Naming Convention */
-
-@tailwind components;
-
-@layer components {
-  .footer {
-  }
-}

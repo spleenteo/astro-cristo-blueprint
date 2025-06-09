@@ -1,9 +1,9 @@
 ---
+import '~/global.css';
 import { Seo } from '@datocms/astro';
 
 import { Header } from '~/components/Header';
 import { Footer } from '~/components/Footer';
-import '~/styles/global.css';
 
 
 import { TagFragment } from '~/lib/datocms/commonFragments';
@@ -13,9 +13,7 @@ import { DraftModeToggler } from '~/components/DraftModeToggler';
 import { isDraftModeEnabled } from '~/lib/draftMode';
 import { setSourceMapRange } from 'typescript';
 
-
 const { seo = [] } = Astro.props;
-
 
 const query = graphql(
   /* GraphQL */ `
@@ -35,7 +33,7 @@ const result = await executeQuery(query, { includeDrafts: draftModeEnabled });
 ---
 
 <!doctype html>
-<html lang={Astro.currentLocale}>
+<html data-theme="coffee" lang={Astro.currentLocale}>
   <head>
     <Seo data={[...seo, ...result.site.favicon]} />
     <meta charset="UTF-8" />
@@ -43,7 +41,7 @@ const result = await executeQuery(query, { includeDrafts: draftModeEnabled });
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
-    <main class="flex-grow">
+    <main class="grow">
       <slot />
     </main>
     <Footer />
