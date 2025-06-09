@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   output: 'static',
-  trailingSlash: 'always',
+  trailingSlash: 'ignore',
 
   i18n: {
     defaultLocale: 'en',

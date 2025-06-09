@@ -1,0 +1,92 @@
+---
+import { executeQuery } from '~/lib/datocms/executeQuery';
+import { query } from './_graphql';
+import { getAllPageSlugsQuery } from './_getStaticPaths';
+import { getCurrentLocale, getFallbackLocale, isValidLocale } from '~/lib/i18n';
+import Layout from '~/layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const locales = await import('~/lib/i18n').then((m) => m.default());
+  
+  // Generate paths for all locale/slug combinations
+  const paths = [];
+  for (const locale of locales) {
+    try {
+      const { allPages } = await executeQuery(getAllPageSlugsQuery);
+      
+      if (allPages && allPages.length > 0) {
+        for (const page of allPages) {
+          paths.push({
+            params: { locale, slug: page.slug },
+          });
+        }
+      }
+    } catch (error) {
+      console.warn(`No pages found for locale ${locale}:`, error);
+    }
+  }
+
+  // If no pages found, return at least one path to prevent build error
+  if (paths.length === 0) {
+    return locales.map((locale: string) => ({
+      params: { locale, slug: 'placeholder' },
+    }));
+  }
+
+  return paths;
+}
+
+// Get and validate current locale
+const { locale, slug } = Astro.params;
+const defaultLocale = await getFallbackLocale();
+
+// Validate the locale
+if (locale) {
+  const isValid = await isValidLocale(locale);
+  if (!isValid) {
+    return new Response(null, {
+      status: 404,
+      statusText: 'Locale not found',
+    });
+  }
+}
+
+// If this is a placeholder page, show 404
+if (slug === 'placeholder') {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Page not found',
+  });
+}
+
+let page = null;
+try {
+  const result = await executeQuery(query, {
+    includeDrafts: false,
+    variables: { slug, locale },
+  });
+  page = result.page;
+} catch (error) {
+  console.warn('Error fetching page:', error);
+}
+
+if (!page) {
+  return new Response(null, {
+    status: 404,
+    statusText: 'Page not found',
+  });
+}
+---
+
+<Layout>
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold mb-8">{page.title}</h1>
+      <div class="prose prose-lg max-w-none">
+        <p class="text-gray-600">Slug: {page.slug}</p>
+        <p class="text-sm text-gray-500">ID: {page.id}</p>
+        {/* Add more page content here as needed */}
+      </div>
+    </div>
+  </div>
+</Layout>
