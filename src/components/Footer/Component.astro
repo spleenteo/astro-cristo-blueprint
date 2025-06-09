@@ -10,10 +10,10 @@ const { links, socialLinks, footNote, secondaryLinks, logo } = footerData;
 
 <footer id="daisy" class="footer bg-base-200 text-base-content p-10">
   {
-    links.map(({ title, links: subLinks }) => (
+    links.map(({ title, links: subLinks }: any) => (
       <nav>
         <h6 class="footer-title">{title}</h6>
-        {subLinks && Array.isArray(subLinks) && subLinks.map(({ text, href, ariaLabel }) => (
+        {subLinks && Array.isArray(subLinks) && subLinks.map(({ text, href, ariaLabel }: any) => (
           <a class="link link-hover" href={href} aria-label={ariaLabel} set:html={text} />
         ))}
       </nav>
@@ -50,7 +50,7 @@ const { links, socialLinks, footNote, secondaryLinks, logo } = footerData;
         secondaryLinks.length > 0 && (
           <div class="text-sm flex gap-2 mt-2">
             {
-              secondaryLinks.map(({ text, href }, index) => (
+              secondaryLinks.map(({ text, href }: any, index: number) => (
                 <>
                   {index !== 0 ? <span class="opacity-40">·</span> : ''}
                   <a
@@ -70,7 +70,7 @@ const { links, socialLinks, footNote, secondaryLinks, logo } = footerData;
     socialLinks?.length ? (
       <nav class="md:place-self-center md:justify-self-end">
         <div class="grid grid-flow-col gap-4">
-          {socialLinks.map(({ ariaLabel, href, text }) => (
+          {socialLinks.map(({ ariaLabel, href, text }: any) => (
             <a
               class="btn btn-ghost btn-square"
               aria-label={ariaLabel}
