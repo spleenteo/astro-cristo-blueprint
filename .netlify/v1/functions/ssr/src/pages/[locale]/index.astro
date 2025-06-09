@@ -4,12 +4,8 @@ import { graphql } from '~/lib/datocms/graphql';
 import { executeQuery } from '~/lib/datocms/executeQuery';
 import { TagFragment } from '~/lib/datocms/commonFragments';
 
-export async function getStaticPaths() {
-  const locales = ['en', 'it'];
-  return locales.map((locale) => ({
-    params: { locale },
-  }));
-}
+import { isDraftModeEnabled } from '~/lib/draftMode';
+import { DraftModeQueryListener } from '~/components/DraftModeQueryListener';
 
 const { locale } = Astro.params;
 const query = graphql(`
@@ -29,8 +25,9 @@ const query = graphql(`
   [TagFragment],
 );
 
+const draftModeEnabled = isDraftModeEnabled(Astro.cookies);
 const { home } = await executeQuery(query, {
-  includeDrafts: false,
+  includeDrafts: draftModeEnabled,
   variables: { locale },
 });
 
